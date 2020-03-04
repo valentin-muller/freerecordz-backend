@@ -9,8 +9,8 @@ const parser = require('../config/cloudinary');
 router.get('/', (req, res, next)=> {
 
     Track.find()
-        .then((oneTrack) => {
-           res.json(oneTrack) 
+        .then((allTracks) => {
+           res.json(allTracks) 
         }).catch((err) => {
             res.json(err)
         });
@@ -42,10 +42,19 @@ router.get('/:id', (req, res) => {
 
 
 //CLOUDINARY UPLOAD
-router.post('/upload', parser.single('video'), (req, res, next) =>{
+router.post('/upload', parser.single('video'), async (req, res, next) =>{
  
-const image_url = req.file.secure_url
- 
+// const image_url = req.file.secure_url
+  const { url, title, desc, bpm, countryOfOrigin, language, releaseYear, budget, recordingEnviroment, user, genre, instrumentsIncl, mood} = req.body;
+try{
+      const newTrack = await Track.create({ url, title, desc, bpm, countryOfOrigin, language, releaseYear, budget, recordingEnviroment, user, genre, instrumentsIncl, mood });
+      res
+        .status(201)  //  Created
+        .json(newTrack);
+   }
+catch (error) {
+    next(createError(error));
+  }
 })
 
 
