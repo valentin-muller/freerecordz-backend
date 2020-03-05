@@ -39,15 +39,16 @@ router.get('/:id', (req, res) => {
 // DELETE '/user/track:id'
 
 
-
+// parser.single('video')
 
 //CLOUDINARY UPLOAD
-router.post('/upload', parser.single('video'), async (req, res, next) =>{
+  router.post('/upload', async (req, res, next) => {
  
 // const image_url = req.file.secure_url
-  const { url, title, desc, bpm, countryOfOrigin, language, releaseYear, budget, recordingEnviroment, user, genre, instrumentsIncl, mood} = req.body;
+  const { /*url,*/ title, desc, bpm, countryOfOrigin, language, releaseYear, budget, recordingEnviroment, genre, instrumentsIncl, mood} = req.body;
+  
 try{
-      const newTrack = await Track.create({ url, title, desc, bpm, countryOfOrigin, language, releaseYear, budget, recordingEnviroment, user, genre, instrumentsIncl, mood });
+      const newTrack = await Track.create({ /*url,*/ title, desc, bpm, countryOfOrigin, language, releaseYear, budget, recordingEnviroment, user: req.session.currentUser._id, genre, instrumentsIncl, mood });
       res
         .status(201)  //  Created
         .json(newTrack);

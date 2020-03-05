@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const trackSchema = new Schema({
 
-  url: { type: String, required: true },
+  url: { type: String },
 
   title: { type: String, required: true },
 
