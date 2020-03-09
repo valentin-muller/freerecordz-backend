@@ -11,7 +11,8 @@ cloudinary.config({
 const storage = cloudinaryStorage({
   cloudinary: cloudinary,
   folder: 'freerecordz',
-  allowedFormats: ['mp3', 'wav']
+  resource_type: 'video',
+  format: 'mp3'
 });
  
 const parser = multer({ storage: storage });

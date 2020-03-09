@@ -39,24 +39,37 @@ router.get('/:id', (req, res) => {
 // DELETE '/user/track:id'
 
 
-// parser.single('video')
+
 
 //CLOUDINARY UPLOAD
-  router.post('/upload', async (req, res, next) => {
+//   router.post('/upload', parser.single('url'), async (req, res, next) => {
  
-// const image_url = req.file.secure_url
-  const { /*url,*/ title, desc, bpm, countryOfOrigin, language, releaseYear, budget, recordingEnviroment, genre, instrumentsIncl, mood} = req.body;
-  
-try{
-      const newTrack = await Track.create({ /*url,*/ title, desc, bpm, countryOfOrigin, language, releaseYear, budget, recordingEnviroment, user: req.session.currentUser._id, genre, instrumentsIncl, mood });
-      res
-        .status(201)  //  Created
-        .json(newTrack);
-   }
-catch (error) {
-    next(createError(error));
-  }
-})
+//     const url = req.file.secure_url 
+//     // console.log('url', url);
+//     const { title, desc, bpm, countryOfOrigin, language, releaseYear, budget, recordingEnviroment, genre, instrumentsIncl, mood} = req.body;
+ 
+
+// try{
+//       const newTrack = await Track.create({ url, title, desc, bpm, countryOfOrigin, language, releaseYear, budget, recordingEnviroment, user: req.session.currentUser._id, genre, instrumentsIncl, mood });
+//       res
+//         .status(201)  //  Created
+//         .json(newTrack);
+//    }
+// catch (error) {
+//     next(createError(error));
+//   }
+// })
+router.post('/upload/url', parser.single('url'), (req, res, next) => {
+  console.log('file upload');
+  console.log('req.file :', req.file);
+  if (!req.file) {
+    next(new Error('No file uploaded!'));
+  };
+  const imageUrl = req.file.secure_url;
+  res.json(imageUrl).status(200);
+  console.log('imageUrl :', imageUrl);
+});
+
 
 
 module.exports = router;
