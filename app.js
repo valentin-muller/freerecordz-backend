@@ -99,7 +99,10 @@ app.use((err, req, res, next) => {
   // (don't try to send the response after it has already been sent)
   if (!res.headersSent) {
     const statusError = err.status || '500';
-    res.status(statusError).json(err);
+    res.status(statusError).json({
+    message: err.message,
+    stack: err.stack
+  });
   }
 });
 

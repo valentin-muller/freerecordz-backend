@@ -8,13 +8,11 @@ cloudinary.config({
   api_secret: 'h7MMUU7azqsi_SJwshXoNA_NrN0'
   });
 
-const storage = cloudinaryStorage({
-  cloudinary: cloudinary,
-  folder: 'freerecordz',
-  resource_type: 'video',
-  format: 'mp3'
-});
+// const storage = cloudinaryStorage({
+//   cloudinary: cloudinary,
+//   folder: 'freerecordz2',
+// });
  
-const parser = multer({ storage: storage });
+// const parser = multer({ storage: storage });
 
-module.exports = parser
+module.exports = cloudinary;

@@ -3,8 +3,13 @@ const router = express.Router();
 const createError = require("http-errors");
 
 const Track = require("../models/track");
-const parser = require('../config/cloudinary');
 
+const multer  = require('multer') //use multer to upload blob data
+const upload = multer(); // setup the multer
+const cloudinaryConfig = require('./../config/cloudinary');
+const fs = require('fs'); //use the file system to save the files on the server
+
+const SIZE_10_MB = 10485760;
 // GET '/user/track:id'
 router.get('/', (req, res, next)=> {
 
@@ -59,15 +64,67 @@ router.get('/:id', (req, res) => {
 //     next(createError(error));
 //   }
 // })
-router.post('/upload/url', parser.single('url'), (req, res, next) => {
-  console.log('file upload');
-  console.log('req.file :', req.file);
-  if (!req.file) {
-    next(new Error('No file uploaded!'));
-  };
-  const imageUrl = req.file.secure_url;
-  res.json(imageUrl).status(200);
-  console.log('imageUrl :', imageUrl);
+// -------------------------------
+// function middle(req, res, next) {
+//   console.log(req.body);
+//   next();
+  
+// }
+
+// router.post('/upload/url', middle, parser.single('file'), (req, res, next) => {
+
+//   if (!req.file) {
+//     next(new Error('No file uploaded!'));
+//   };
+//   const imageUrl = req.file.secure_url;
+//   console.log('req.file :', req.file);
+//   res.status(200).json({imageUrl: imageUrl})
+// });
+
+
+// server
+// routes/track.js
+
+
+// POST track/upload/url.   -  Upload mp3 files to the clodudinary.
+router.post('/upload/url', upload.single('file'), (req, res, next) => {
+  console.log('req.file :', req.file) 
+  if(req.file ) {
+    if (req.file.size > SIZE_10_MB) {
+        next(createError(400, `File is bigger than 10MB.`))
+      // res.status(400).send({error: 'File is bigger than 10MB.'})
+        return;
+    }
+      
+  }
+  // upload.single('file') is the multer setup which reads the incoming "mulipart/form-data"
+  // parses it and adds it to the req.file with all the information and the Buffer (req.file.buffer).
+
+  // absolute path where to save the temporary file. Includes the file name and extension
+  // In order for the below writeFileSync operation to work properly, create additional directory named uploads
+  // in the routes directory, as '/routes/uploads'
+  let uploadLocation = __dirname + '/uploads/' + req.file.originalname;
+
+  // write the BLOB to the server as a file
+  fs.writeFileSync(uploadLocation, Buffer.from(new Uint8Array(req.file.buffer)) );
+
+  cloudinaryConfig.v2.uploader.upload(
+    uploadLocation, 
+    { resource_type: "video", folder: `audiofiles/`, overwrite: true },
+    (error, result) => {
+      if (error) res.status(500).json(error);
+      else {
+        // Delete the temporary file from the server
+        fs.unlink(uploadLocation, (deleteErr) => {
+          if (deleteErr) res.status(500).send(deleteErr);
+          
+          console.log('temp file was deleted');
+          res.status(200).json({fileUrl: result.secure_url});
+        });
+        
+      }
+    }
+  );  
 });
 
 
