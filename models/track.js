@@ -11,7 +11,7 @@ const trackSchema = new Schema({
 
   bpm: {range: [{type: Number, min: 1, max: 165}]},
 
-  genre: [{ type: String, enum: ["Alternative", "Ambient", "Blues", "Cinematic", "Classical", "Country", "Electronic", "Folk", "Hip Hop", "Indie", "Jazz", "Pop", "Post Rock", "R&B", "Rock", "Singer-Songwriter", "Soul", "Spoken Word", "Vintage", "World"]}],
+  genre: [{ type: String, required: false, enum: ["Alternative", "Ambient", "Blues", "Cinematic", "Classical", "Country", "Electronic", "Folk", "Hip Hop", "Indie", "Jazz", "Pop", "Post Rock", "R&B", "Rock", "Singer-Songwriter", "Soul", "Spoken Word", "Vintage", "World"]}],
 
   countryOfOrigin: { type: String, required: true },
 
