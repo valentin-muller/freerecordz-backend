@@ -35,7 +35,7 @@ app.use(
     credentials: true,
     origin: [
       process.env.PUBLIC_DOMAIN,
-      "https://freerecordz-deploy-lecture.herokuapp.com"
+      "https://freerecordz.herokuapp.com"
     ]
   })
 );

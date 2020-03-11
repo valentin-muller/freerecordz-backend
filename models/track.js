@@ -31,7 +31,7 @@ const trackSchema = new Schema({
       type: String, 
       enum: ["Bedroom studio", "Home studio", "Professional Studio", "State of the are studio", "Other"]},
   
-  user: { type: mongoose.Schema.Types.ObjectId, ref: "user" }
+  user: { type: mongoose.Schema.Types.ObjectId, ref: "user", required: true}
   });
 
 const Track = mongoose.model('Track', trackSchema);
