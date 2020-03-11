@@ -64,7 +64,7 @@ router.get('/:id', (req, res) => {
 //     next(createError(error));
 //   }
 // })
-// -------------------------------
+// // -------------------------------
 // function middle(req, res, next) {
 //   console.log(req.body);
 //   next();
@@ -84,6 +84,17 @@ router.get('/:id', (req, res) => {
 
 // server
 // routes/track.js
+
+
+
+
+
+
+
+
+
+
+
 
 
 // POST track/upload/url.   -  Upload mp3 files to the clodudinary.
@@ -129,4 +140,23 @@ router.post('/upload/url', upload.single('file'), (req, res, next) => {
 
 
 
+
+
+//POST track/upload - Upload Form to Database
+router.post('/upload' ,(req, res, next) => {
+
+      const {url, title, desc, bpm, countryOfOrigin, language, releaseYear, budget, recordingEnviroment, genre, instrumentsIncl, mood } = req.body;
+      console.log('req.body :', req.body);
+      Track.create({ url, title, desc, bpm, countryOfOrigin, language, releaseYear, budget, recordingEnviroment, user: req.session.currentUser._id, genre, instrumentsIncl, mood })
+        .then( (newTrack) => {
+          console.log('newTrack:', newTrack);
+          
+          res
+            .status(201)
+            .json(newTrack)
+        } )
+        .catch( (err) => {
+          next(createError(err));
+        })
+      })
 module.exports = router;
