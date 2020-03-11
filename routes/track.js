@@ -10,17 +10,22 @@ const cloudinaryConfig = require('./../config/cloudinary');
 const fs = require('fs'); //use the file system to save the files on the server
 
 const SIZE_10_MB = 10485760;
+
+
+
+
 // GET '/user/track:id'
 router.get('/', (req, res, next)=> {
 
-    Track.find()
+    Track.find().populate('user')
         .then((allTracks) => {
+          console.log('allTracks :', allTracks);
            res.json(allTracks) 
         }).catch((err) => {
             res.json(err)
         });
 })
-// POST '/user/track:id'
+// GET '/user/track:id'
 router.get('/:id', (req, res) => {
   const { id } = req.params;
 
@@ -42,49 +47,6 @@ router.get('/:id', (req, res) => {
 
 
 // DELETE '/user/track:id'
-
-
-
-
-//CLOUDINARY UPLOAD
-//   router.post('/upload', parser.single('url'), async (req, res, next) => {
- 
-//     const url = req.file.secure_url 
-//     // console.log('url', url);
-//     const { title, desc, bpm, countryOfOrigin, language, releaseYear, budget, recordingEnviroment, genre, instrumentsIncl, mood} = req.body;
- 
-
-// try{
-//       const newTrack = await Track.create({ url, title, desc, bpm, countryOfOrigin, language, releaseYear, budget, recordingEnviroment, user: req.session.currentUser._id, genre, instrumentsIncl, mood });
-//       res
-//         .status(201)  //  Created
-//         .json(newTrack);
-//    }
-// catch (error) {
-//     next(createError(error));
-//   }
-// })
-// // -------------------------------
-// function middle(req, res, next) {
-//   console.log(req.body);
-//   next();
-  
-// }
-
-// router.post('/upload/url', middle, parser.single('file'), (req, res, next) => {
-
-//   if (!req.file) {
-//     next(new Error('No file uploaded!'));
-//   };
-//   const imageUrl = req.file.secure_url;
-//   console.log('req.file :', req.file);
-//   res.status(200).json({imageUrl: imageUrl})
-// });
-
-
-// server
-// routes/track.js
-
 
 
 

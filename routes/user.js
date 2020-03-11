@@ -1,20 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const createError = require("http-errors");
+const mongoose = require('mongoose')
 
 const User = require("../models/user");
 
 
-// GET '/user'
-router.get('/', (req, res, next) => {
-    User.find()
-        .then( (user) => {
-            res.json(user);
-        })
-        .catch( (err) => {
-            res.json(err);
-        });
-});
+
 
 // GET '/user/:id'
 router.get('/:id', (req, res) => {
@@ -27,13 +19,25 @@ router.get('/:id', (req, res) => {
     return;
   }
 
-  User.findById( id ).populate("saveMusicArr").populate("ownTracksArr")
+  User.findById( id )//.populate("saveMusicArr").populate("ownTracksArr")
     .then( (oneUser) => {
       res.status(200).json(oneUser);
+      console.log('oneUser :', oneUser);
     })
     .catch((err) => {
       res.status(500).json(err);
     })
+});
+
+// GET '/user'
+router.get('/', (req, res, next) => {
+    User.find()
+        .then( (user) => {
+            res.json(user);
+        })
+        .catch( (err) => {
+            res.json(err);
+        });
 });
 
 // PUT '/user/:id'
@@ -53,9 +57,8 @@ router.put('/:id', (req, res, next)=>{
     })
 })
 
-
-
 // DELETE '/user/:id'
+
 
 
 module.exports = router;
