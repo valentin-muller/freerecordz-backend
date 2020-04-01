@@ -52,13 +52,6 @@ router.get('/:id', (req, res) => {
 
 
 
-
-
-
-
-
-
-
 // POST track/upload/url.   -  Upload mp3 files to the clodudinary.
 router.post('/upload/url', upload.single('file'), (req, res, next) => {
   console.log('req.file :', req.file) 
@@ -99,11 +92,6 @@ router.post('/upload/url', upload.single('file'), (req, res, next) => {
     }
   );  
 });
-
-
-
-
-
 //POST track/upload - Upload Form to Database
 router.post('/upload' ,(req, res, next) => {
 

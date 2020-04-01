@@ -7,6 +7,7 @@ const userSchema = new Schema({
   lastName: { type: String, required: true },
   username: { type: String, required: true },
   password: { type: String, required: true },
+  bio: { type: String },
   savedMusicArr: [{ type: mongoose.Schema.Types.ObjectId, ref: "track" }],
   }
 )
